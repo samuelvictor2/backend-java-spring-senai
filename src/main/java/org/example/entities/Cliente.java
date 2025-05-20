@@ -1,6 +1,12 @@
 package org.example.entities;
 
+import org.aspectj.bridge.IMessage;
+import org.hibernate.validator.constraints.br.CPF;
+
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -11,15 +17,26 @@ public class Cliente implements Serializable {
     @Column(name = "CLI_ID")
     private Long cliId;
 
+
+    @NotBlank(message = "nome é obrigatorio")
+    @Size(max = 100, message = "nome deve ter no maximo 100 caractere")
     @Column(name = "CLI_NOME")
     private String cliNome;
 
+
+    @NotBlank(message = "CPF é obrigatorio")
+    @CPF(message = "CPF invalido")
     @Column(name = "CLI_CPF", length = 11)
     private String cliCpf;
 
+    @NotBlank(message = "email é obrigatorio")
+    @Email(message = "email invalido")
+    @Size (max = 100, message = "email deve ter no maximo 100 caractere")
     @Column(name = "CLI_EMAIL")
     private String cliEmail;
 
+    @NotBlank(message = "telefone é obrigatorio")
+    @Size(max = 14, message = "telefone deve ter no maximo 15 caractere")
     @Column(name = "CLI_TELEFONE", length = 14)
     private String cliTelefone;
 
