@@ -8,6 +8,8 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Cliente implements Serializable {
@@ -17,6 +19,11 @@ public class Cliente implements Serializable {
     @Column(name = "CLI_ID")
     private Long cliId;
 
+    @OneToMany(mappedBy = "endCliente", cascade = CascadeType.ALL)
+    private List<Endereco> enderecos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "conCliente", cascade = CascadeType.ALL)
+    private List<Contato> contatos = new ArrayList<>();
 
     @NotBlank(message = "nome é obrigatorio")
     @Size(max = 100, message = "nome deve ter no maximo 100 caractere")
@@ -29,26 +36,16 @@ public class Cliente implements Serializable {
     @Column(name = "CLI_CPF", length = 11)
     private String cliCpf;
 
-    @NotBlank(message = "email é obrigatorio")
-    @Email(message = "email invalido")
-    @Size (max = 100, message = "email deve ter no maximo 100 caractere")
-    @Column(name = "CLI_EMAIL")
-    private String cliEmail;
 
-    @NotBlank(message = "telefone é obrigatorio")
-    @Size(max = 14, message = "telefone deve ter no maximo 15 caractere")
-    @Column(name = "CLI_TELEFONE", length = 14)
-    private String cliTelefone;
 
     public Cliente() {
     }
 
-    public Cliente(Long cliId, String cliNome, String cliCpf, String cliEmail, String cliTelefone) {
+    public Cliente(Long cliId, String cliNome, String cliCpf) {
         this.cliId = cliId;
         this.cliNome = cliNome;
         this.cliCpf = cliCpf;
-        this.cliEmail = cliEmail;
-        this.cliTelefone = cliTelefone;
+
     }
 
     public Long getCliId() {
@@ -75,19 +72,19 @@ public class Cliente implements Serializable {
         this.cliCpf = cliCpf;
     }
 
-    public String getCliEmail() {
-        return cliEmail;
+    public List<Contato> getContatos() {
+        return contatos;
     }
 
-    public void setCliEmail(String cliEmail) {
-        this.cliEmail = cliEmail;
+    public void setContatos(List<Contato> contatos) {
+        this.contatos = contatos;
     }
 
-    public String getCliTelefone() {
-        return cliTelefone;
+    public List<Endereco> getEnderecos() {
+        return enderecos;
     }
 
-    public void setCliTelefone(String cliTelefone) {
-        this.cliTelefone = cliTelefone;
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
     }
 }

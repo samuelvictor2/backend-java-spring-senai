@@ -1,5 +1,7 @@
 package org.example.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +15,11 @@ public class Contato implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CON_ID")
     private Long conId;
+
+    @JsonIgnore
+    @GeneratedValue
+    @JoinColumn
+    private Cliente conCliente;
 
     @NotBlank(message = "celular é obrigatorio")
     @Size(max = 14, message = "celular deve ter no maximo 15 caractere")
@@ -30,11 +37,14 @@ public class Contato implements Serializable {
     @Column(length = 55, name = "CON_EMAIL")
     private String conEmail;
 
+
+
     public Contato() {
     }
 
-    public Contato(Long conId, String conCelular, String conTelefoneComercial, String conEmail) {
+    public Contato(Long conId, Cliente conCliente, String conCelular, String conTelefoneComercial, String conEmail) {
         this.conId = conId;
+        this.conCliente = conCliente;
         this.conCelular = conCelular;
         this.conTelefoneComercial = conTelefoneComercial;
         this.conEmail = conEmail;
