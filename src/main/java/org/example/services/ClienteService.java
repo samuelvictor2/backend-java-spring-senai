@@ -36,9 +36,7 @@ public class ClienteService {
     public Cliente insert(Cliente obj) {
         try {
             obj.setCliId(null);
-            obj = repository.save(obj);
-            enderecoRepository.saveAll(obj.getEnderecos());
-            return obj;
+            return repository.save(obj); // apenas essa linha já resolve
         } catch (DataIntegrityViolationException e) {
             throw new ValueBigForAtributeException(e.getMessage());
         }
