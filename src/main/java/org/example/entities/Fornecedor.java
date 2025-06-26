@@ -1,7 +1,6 @@
 package org.example.entities;
 
 import org.hibernate.validator.constraints.br.CNPJ;
-import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -18,25 +17,30 @@ public class Fornecedor implements Serializable {
     @Column(name = "FOR_ID")
     private Long forId;
 
-    @NotBlank(message = "nome fantasia  é obrigatorio")
-    @Size(max = 100, message = "nome deve ter no maximo 100 caractere")
+    @NotBlank(message = "nome fantasia é obrigatório")
+    @Size(max = 100, message = "nome deve ter no máximo 100 caracteres")
     @Column(name = "FOR_NOME_FANTASIA")
     private String forNomeFantasia;
 
-    @NotBlank(message = "CNPJ é obrigatorio")
-    @CNPJ(message = "CNPJ invalido")
-    @Column(name = "FOR_CNPJ", unique = true, length = 15)
+    @NotBlank(message = "CNPJ é obrigatório")
+    @CNPJ(message = "CNPJ inválido")
+    @Column(name = "FOR_CNPJ", unique = true, length = 18)
     private String forCnpj;
 
-    @NotBlank(message = "razao social  é obrigatorio")
-    @Size(max = 100, message = "razao social deve ter no maximo 100 caractere")
+    @NotBlank(message = "razão social é obrigatória")
+    @Size(max = 100, message = "razão social deve ter no máximo 100 caracteres")
     @Column(name = "FOR_RAZAO_SOCIAL")
     private String forRazaoSocial;
 
-    public Fornecedor() {
-    }
+    @OneToMany(mappedBy = "endFornecedor", cascade = CascadeType.ALL)
+    private List<Endereco> enderecos = new ArrayList<>();
 
-    public Fornecedor(Long forId, String forNome, String forNomeFantasia, String forCnpj, String forRazaoSocial) {
+    @OneToMany(mappedBy = "conFornecedor", cascade = CascadeType.ALL)
+    private List<Contato> contatos = new ArrayList<>();
+
+    public Fornecedor() {}
+
+    public Fornecedor(Long forId, String forNomeFantasia, String forCnpj, String forRazaoSocial) {
         this.forId = forId;
         this.forNomeFantasia = forNomeFantasia;
         this.forCnpj = forCnpj;
@@ -75,4 +79,19 @@ public class Fornecedor implements Serializable {
         this.forRazaoSocial = forRazaoSocial;
     }
 
+    public List<Endereco> getEnderecos() {
+        return enderecos;
+    }
+
+    public void setEnderecos(List<Endereco> enderecos) {
+        this.enderecos = enderecos;
+    }
+
+    public List<Contato> getContatos() {
+        return contatos;
+    }
+
+    public void setContatos(List<Contato> contatos) {
+        this.contatos = contatos;
+    }
 }

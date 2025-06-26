@@ -20,7 +20,12 @@ public class Endereco implements Serializable {
     @JoinColumn(name = "END_CLI_ID")
     private Cliente endCliente;
 
-    @NotBlank(message = "Rua é obrigatório")
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "END_FORN_ID")
+    private Fornecedor endFornecedor;
+
+    @NotBlank(message = "Rua é obrigatória")
     @Size(max = 150, message = "Rua deve ter no máximo 150 caracteres")
     @Column(name = "END_RUA")
     private String endRua;
@@ -30,27 +35,28 @@ public class Endereco implements Serializable {
     @Column(name = "END_NUMERO")
     private String endNumero;
 
-    @NotBlank(message = "Cidade é obrigatório")
+    @NotBlank(message = "Cidade é obrigatória")
     @Size(max = 100, message = "Cidade deve ter no máximo 100 caracteres")
     @Column(name = "END_CIDADE")
     private String endCidade;
 
     @NotBlank(message = "CEP é obrigatório")
-    @Size(max = 8, message = "CEP deve ter no máximo 100 caracteres")
+    @Size(max = 8, message = "CEP deve ter no máximo 8 caracteres")
     @Column(name = "END_CEP", length = 8)
     private String endCep;
 
-    @Column(name = "END_ESTADO", length = 2)
     @NotBlank(message = "Estado é obrigatório")
     @Size(max = 2, message = "Estado deve ter no máximo 2 caracteres")
+    @Column(name = "END_ESTADO", length = 2)
     private String endEstado;
 
     public Endereco() {
     }
 
-    public Endereco(Long endId, Cliente endCliente, String endRua, String endNumero, String endCidade, String endCep, String endEstado) {
+    public Endereco(Long endId, Cliente endCliente, Fornecedor endFornecedor, String endRua, String endNumero, String endCidade, String endCep, String endEstado) {
         this.endId = endId;
         this.endCliente = endCliente;
+        this.endFornecedor = endFornecedor;
         this.endRua = endRua;
         this.endNumero = endNumero;
         this.endCidade = endCidade;
@@ -64,6 +70,22 @@ public class Endereco implements Serializable {
 
     public void setEndId(Long endId) {
         this.endId = endId;
+    }
+
+    public Cliente getEndCliente() {
+        return endCliente;
+    }
+
+    public void setEndCliente(Cliente endCliente) {
+        this.endCliente = endCliente;
+    }
+
+    public Fornecedor getEndFornecedor() {
+        return endFornecedor;
+    }
+
+    public void setEndFornecedor(Fornecedor endFornecedor) {
+        this.endFornecedor = endFornecedor;
     }
 
     public String getEndRua() {

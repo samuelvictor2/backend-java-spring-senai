@@ -47,11 +47,11 @@ public class ClienteService {
     public Cliente update(Long id, ClienteDTO objDTO){
         try {
             Cliente entity = findById(id);
-            entity.setCliNome((objDTO.getCliNome()));
+            entity.setCliNome(objDTO.getCliNome());
             entity.setCliCpf(objDTO.getCliCpf());
 
+            // Atualiza primeiro endereço e contato — adapte se precisar atualizar mais
             Endereco endereco = entity.getEnderecos().get(0);
-
             endereco.setEndRua(objDTO.getEndRua());
             endereco.setEndNumero(objDTO.getEndNumero());
             endereco.setEndCidade(objDTO.getEndCidade());
@@ -59,17 +59,14 @@ public class ClienteService {
             endereco.setEndEstado(objDTO.getEndEstado());
 
             Contato contato = entity.getContatos().get(0);
-
             contato.setConCelular(objDTO.getConCelular());
             contato.setConTelefoneComercial(objDTO.getConTelefoneComercial());
             contato.setConEmail(objDTO.getConEmail());
 
             repository.save(entity);
-
             return entity;
         } catch (DataIntegrityViolationException e){
-            throw new ValueBigForAtributeException(e.getMessage()){
-            };
+            throw new ValueBigForAtributeException(e.getMessage());
         }
     }
 
@@ -82,20 +79,34 @@ public class ClienteService {
     }
 
     public Cliente fromDTO(ClienteDTO objDto) {
-        Cliente fornec = new Cliente(null, objDto.getCliNome(), objDto.getCliCpf());
+        Cliente cliente = new Cliente(null, objDto.getCliNome(), objDto.getCliCpf());
 
-        Endereco ender = new Endereco(null, fornec, objDto.getEndRua(), objDto.getEndNumero(),
-                objDto.getEndCidade(), objDto.getEndCep(),
-                objDto.getEndEstado());
+        Endereco endereco = new Endereco(
+                null,
+                cliente,
+                null, // Fornecedor é null porque é Cliente
+                objDto.getEndRua(),
+                objDto.getEndNumero(),
+                objDto.getEndCidade(),
+                objDto.getEndCep(),
+                objDto.getEndEstado()
+        );
 
-        Contato contato = new Contato(null, fornec, objDto.getConCelular(), objDto.getConTelefoneComercial(),
-                objDto.getConEmail());
+        Contato contato = new Contato(
+                null,
+                cliente,
+                null, // Fornecedor é null porque é Cliente
+                objDto.getConCelular(),
+                objDto.getConTelefoneComercial(),
+                objDto.getConEmail()
+        );
 
-        fornec.getEnderecos().add(ender);
-        fornec.getContatos().add(contato);
+        cliente.getEnderecos().add(endereco);
+        cliente.getContatos().add(contato);
 
-        return fornec;
+        return cliente;
     }
+
     public ClienteDTO toNewDTO(Cliente obj) {
         ClienteDTO dto = new ClienteDTO();
 
