@@ -1,10 +1,8 @@
 package org.example.entities;
 
-import org.aspectj.bridge.IMessage;
 import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -19,24 +17,21 @@ public class Cliente implements Serializable {
     @Column(name = "CLI_ID")
     private Long cliId;
 
-    @OneToMany(mappedBy = "endCliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "endCliente", cascade = CascadeType.ALL, orphanRemoval = true) // Recomendado adicionar orphanRemoval
     private List<Endereco> enderecos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "conCliente", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "conCliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Contato> contatos = new ArrayList<>();
 
-    @NotBlank(message = "nome é obrigatorio")
-    @Size(max = 100, message = "nome deve ter no maximo 100 caractere")
+    @NotBlank(message = "nome é obrigatório")
+    @Size(max = 100, message = "nome deve ter no máximo 100 caracteres")
     @Column(name = "CLI_NOME")
     private String cliNome;
 
-
-    @NotBlank(message = "CPF é obrigatorio")
-    @CPF(message = "CPF invalido")
+    @NotBlank(message = "CPF é obrigatório")
+    @CPF(message = "CPF inválido")
     @Column(name = "CLI_CPF", length = 11)
     private String cliCpf;
-
-
 
     public Cliente() {
     }
@@ -45,8 +40,9 @@ public class Cliente implements Serializable {
         this.cliId = cliId;
         this.cliNome = cliNome;
         this.cliCpf = cliCpf;
-
     }
+
+    // Getters e Setters
 
     public Long getCliId() {
         return cliId;
@@ -87,6 +83,4 @@ public class Cliente implements Serializable {
     public void setEnderecos(List<Endereco> enderecos) {
         this.enderecos = enderecos;
     }
-
-
 }
